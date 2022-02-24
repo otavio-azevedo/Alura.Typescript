@@ -1,32 +1,41 @@
+import { WeekDays } from "../enums/week-days.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
+import { MensagemView } from "../views/mensagem-view.js";
 import { NegociacoesView } from "../views/negociacoes-view.js";
 export class NegociacaoController {
     constructor() {
         this.negociacoes = new Negociacoes();
-        this.negociacoesView = new NegociacoesView('#negociacoesView');
+        this.negociacoesView = new NegociacoesView('#negociacoesView', true);
+        this.mensagemView = new MensagemView('#mensagemView');
         this.inputData = document.querySelector('#data');
         this.inputQuantidade = document.querySelector('#quantidade');
         this.inputValor = document.querySelector('#valor');
         this.negociacoesView.update(this.negociacoes);
     }
-    adiciona() {
-        this.negociacoes.adiciona(this.criaNegociacao());
-        console.log(this.negociacoes.lista());
-        this.negociacoesView.update(this.negociacoes);
-        this.limparFormulario();
+    add() {
+        const negociacao = Negociacao.Create(this.inputData.value, this.inputQuantidade.value, this.inputValor.value);
+        if (!this.isWeekDay(negociacao.data)) {
+            this.mensagemView.update('Apenas negociações em dias úteis são aceitas.');
+            return;
+        }
+        this.negociacoes.add(negociacao);
+        console.log(this.negociacoes.list());
+        this.cleanForm();
+        this.refreshViews();
     }
-    criaNegociacao() {
-        const regExp = /-/g; //search all '-'
-        const date = new Date(this.inputData.value.replace(regExp, ','));
-        const quantidade = parseInt(this.inputQuantidade.value);
-        const valor = parseFloat(this.inputValor.value);
-        return new Negociacao(date, quantidade, valor);
+    isWeekDay(data) {
+        return data.getDay() > WeekDays.SUNDAY
+            && data.getDay() < WeekDays.SATURDAY;
     }
-    limparFormulario() {
+    cleanForm() {
         this.inputData.value = '';
         this.inputQuantidade.value = '';
         this.inputValor.value = '';
         this.inputData.focus();
+    }
+    refreshViews() {
+        this.negociacoesView.update(this.negociacoes);
+        this.mensagemView.update('Negociação adicionada com sucesso!');
     }
 }

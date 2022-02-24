@@ -6,6 +6,8 @@
         "outDir": "dist/js", //output directory for JS files
         "target": "ES6", // ECMASCRIPT version to convert
         "noEmitOnError": true, // no generate JS files with erros
-        "noImplicitAny": true // dont allow auto apply any 
+        "noImplicitAny": true, // dont allow auto apply any 
+        "removeComments": true, // remove comments on JS files
+        "strictNullChecks": true // checks all possible of null occurences (https://www.typescriptlang.org/tsconfig#strictNullChecks)
     }
 }
