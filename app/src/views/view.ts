@@ -1,3 +1,5 @@
+import { logExecutionTime } from "../decorators/log-execution-time.js";
+
 export abstract class View<T>{ //abstract generic <T> class
 
     protected elemento: HTMLElement;
@@ -17,6 +19,7 @@ export abstract class View<T>{ //abstract generic <T> class
 
     protected abstract getTemplate(model: T): string; //necessary to override it in the child classes
 
+    @logExecutionTime()
     public update(model: T): void {
         let template = this.getTemplate(model);
 
