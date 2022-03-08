@@ -4,10 +4,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+import { inspect } from "../decorators/inspect.js";
 import { logExecutionTime } from "../decorators/log-execution-time.js";
 export class View {
-    constructor(selector, escape) {
-        this.escape = false;
+    constructor(selector) {
         const elemento = document.querySelector(selector);
         if (elemento) {
             this.elemento = elemento;
@@ -15,17 +15,13 @@ export class View {
         else {
             throw Error(`Selector ${selector} dont exists.`);
         }
-        if (escape)
-            this.escape = escape;
     }
     update(model) {
         let template = this.getTemplate(model);
-        if (this.escape) {
-            template = template.replace('/<script>[\s\S]*?<\/script>/', '');
-        }
         this.elemento.innerHTML = template;
     }
 }
 __decorate([
+    inspect(),
     logExecutionTime()
 ], View.prototype, "update", null);

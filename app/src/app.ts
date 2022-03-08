@@ -12,3 +12,11 @@ if (form) {
     throw Error('The application could not be initialized.');
 }
 
+const importBtn = document.querySelector('#import-btn');
+
+if (importBtn) {
+    importBtn.addEventListener('click', () => { controller.importData() })
+} else {
+    throw Error('Button not found.');
+}
+
