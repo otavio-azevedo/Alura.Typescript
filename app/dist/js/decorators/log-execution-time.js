@@ -11,3 +11,4 @@ export function logExecutionTime() {
         return descriptor;
     };
 }
+//# sourceMappingURL=log-execution-time.js.map

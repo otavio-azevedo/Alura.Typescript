@@ -10,6 +10,7 @@ import { WeekDays } from "../enums/week-days.js";
 import { Negociacao } from "../models/negociacao.js";
 import { Negociacoes } from "../models/negociacoes.js";
 import { NegociacoesService } from "../services/negociacoes-service.js";
+import { customPrint } from "../utils/print-custom.js";
 import { MensagemView } from "../views/mensagem-view.js";
 import { NegociacoesView } from "../views/negociacoes-view.js";
 export class NegociacaoController {
@@ -27,12 +28,20 @@ export class NegociacaoController {
             return;
         }
         this.negociacoes.add(negociacao);
+        customPrint(negociacao, this.negociacoes);
         this.cleanForm();
         this.refreshViews();
     }
     importData() {
         this.negociacoesService
             .obterNegociacoes()
+            .then(negociacoes => {
+            return negociacoes.filter(negociacao => {
+                return !this.negociacoes
+                    .list()
+                    .some(negociacao => negociacao.areEqual(negociacao));
+            });
+        })
             .then(negociacoes => {
             for (let negociacao of negociacoes) {
                 this.negociacoes.add(negociacao);
@@ -67,3 +76,4 @@ __decorate([
 __decorate([
     logExecutionTime()
 ], NegociacaoController.prototype, "add", null);
+//# sourceMappingURL=negociacao-controller.js.map
